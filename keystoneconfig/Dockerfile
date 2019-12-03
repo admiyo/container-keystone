@@ -8,4 +8,4 @@ RUN yum install -y centos-release-openstack-stein &&\
  
 COPY ./keystone-configure.sql /
 COPY ./configure_keystone.sh /
-CMD /configure_keystone.sh 
+CMD /configure_keystone.sh 10.89.0.4 3306
