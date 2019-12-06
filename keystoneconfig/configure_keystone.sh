@@ -1,15 +1,19 @@
 #!/bin/bash
 
-MYSQL_HOST=$1
-MYSQL_PORT=$2
+MYSQL_HOST=keystone-mariadb
+MYSQL_PORT=3306
+
+if [ -z "$MYSQL_PASSWORD" ]
+then MYSQL_PASSWORD=$( cat /etc/keystone/dbpass.txt )
+fi
 
 
 echo -n Database 
-mysql -h $MYSQL_HOST  -P$MYSQL_PORT -uroot --password=my-secret-pw < keystone-configure.sql
+mysql -h $MYSQL_HOST  -P$MYSQL_PORT -uroot --password=$MYSQL_PASSWORD < keystone-configure.sql
 echo " [COMPLETE]"
  
 echo -n "configuration "
-openstack-config  --set  /etc/keystone/keystone.conf database connection mysql+pymysql://keystone:keystone@$MYSQL_HOST/keystone
+openstack-config  --set  /etc/keystone/keystone.conf database connection mysql+pymysql://keystone:$MYSQL_PASSWORD@$MYSQL_HOST/keystone
 DATABASE_CONN=`openstack-config  --get  /etc/keystone/keystone.conf database connection `
 echo $DATABASE_CONN
  
