@@ -15,7 +15,5 @@ then MYSQL_PASSWORD=$( cat /etc/keystone/dbpass.txt )
 fi
 
 openstack-config  --set  /etc/keystone/keystone.conf database connection mysql+pymysql://keystone:$MYSQL_PASSWORD@$MYSQL_HOST/keystone
-keystone-manage fernet_setup  --keystone-user keystone  --keystone-group keystone
-
 
 exec /usr/sbin/apachectl -DFOREGROUND
